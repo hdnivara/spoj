@@ -46,7 +46,9 @@ def primegen_range_sieve(m, n):
     """Generate primes in [m, n] using sieve. """
     all_primes = primegen_upto_sieve(n)
 
-    primes = [i for i in all_primes if i >= m]
+    next_prime = next(x[0] for x in enumerate(all_primes) if x[1] >= m)
+    primes = all_primes[next_prime:]
+
     return primes
 
 
