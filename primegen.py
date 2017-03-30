@@ -1,6 +1,7 @@
 """
-Peter wants to generate some prime numbers for his cryptosystem. Help him! Your
-task is to generate all prime numbers between two given numbers!
+Generate all prime numbers between any two given numbers.
+
+http://www.spoj.com/problems/PRIME1/
 
 Input:
 The input begins with the number t of test cases in a single line (t<=10). In
@@ -23,7 +24,6 @@ per line, test cases separated by an empty line.
 3
 5
 
-http://www.spoj.com/problems/PRIME1/
 """
 import math
 import sys
@@ -40,6 +40,14 @@ def primegen_print(primes):
     for p in primes:
         print p
     print "\n"
+
+
+def primegen_range_sieve(m, n):
+    """Generate primes in [m, n] using sieve. """
+    all_primes = primegen_upto_sieve(n)
+
+    primes = [i for i in all_primes if i >= m]
+    return primes
 
 
 def primegen_range(m, n):
@@ -60,6 +68,24 @@ def primegen_range(m, n):
     return primes
 
 
+def primegen_upto_sieve(n):
+    """Generate primes upto n using sieve. """
+    limit = n + 1
+    non_prime = [False] * limit
+    primes = []
+
+    for index in xrange(2, limit):
+        if non_prime[index]:
+            continue
+
+        for i in xrange(index*2, limit, index):
+            non_prime[i] = True
+
+        primes.append(index)
+
+    return primes
+
+
 def primegen_upto(n):
     """Return a list of primes from (2, n]. """
     primes = [2, 3,]
@@ -68,7 +94,6 @@ def primegen_upto(n):
             primes.append(num)
 
     return primes
-
 
 
 def main():
@@ -84,9 +109,19 @@ def main():
         tmp -= 1
 
     for l in bounds:
-        p = primegen_range(l[0], l[1])
+        p = primegen_range_sieve(l[0], l[1])
         primegen_print(p)
+
+
+def ad_main():
+    ntests = 4
+    bounds = [[1, 10], [3, 5], [2, 33], [17, 29]]
+
+    for l in bounds:
+        p = primegen_range_sieve(l[0], l[1])
+        print l, p
 
 
 if __name__ == "__main__":
     main()
+    #ad_main()
